@@ -1,12 +1,48 @@
 package org.example;
 
-import java.util.function.BinaryOperator;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author xuyachang
  * @date 2024/10/12
  */
 public class LeetCode {
+
+
+    /**
+     * 使用hash表将时间复杂度降低。
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int[] twoSum(int[] nums, int target) {
+        Map<Integer,Integer> map = new HashMap<>();
+
+        for (int i=0;i<nums.length;i++){
+            int key = target-nums[i];
+            if(map.containsKey(key)){
+                return new int[]{i,map.get(key)};
+            }
+            map.put(nums[i],i);
+        }
+        return null;
+    }
+
+
+    /**
+     * 要考虑负数，反转数字超过int最大值。
+     */
+    public boolean isPalindrome(int x) {
+        if(x<0)return false;
+        char[] chars = String.valueOf(x).toCharArray();
+        for (int i = 0; i < chars.length/2; i++) {
+            if(chars[i]!=chars[chars.length-1-i]){
+                return false;
+            }
+        }
+        return true;
+    }
 
     public int strStr(String haystack, String needle) {
         return haystack.indexOf(needle);
@@ -84,69 +120,5 @@ public class LeetCode {
         return ans.reverse().toString();
     }
 
-    /**
-     * 爬楼梯
-     * f(x)=f(x-1)+f(x-2)
-     * 【滚动数组思想】:后一个数为前两个数之和
-     * r=p+q
-     * @param n
-     * @return
-     */
-    public int climbStairs(int n) {
-        int p=0,q=0,r=1;
-        for (int i = 1; i <= n; ++i) {
-            p=q;
-            q=r;
-            r=p+q;
-        }
-        return r;
-    }
 
-    /**
-     * 斐波那契数列
-     * F(n) = F(n - 1) + F(n - 2)，其中 n > 1
-     * @param n
-     * @return
-     */
-    public int fib(int n) {
-        if(n==0)return 0;
-        if(n==1)return 1;
-        int p=0,q=1,r=1;
-        for (int i = 3; i <= n; i++) {
-            p=q;
-            q=r;
-            r=p+q;
-        }
-        return r;
-    }
-
-    /**
-     * 第 N 个泰波那契数
-     * Tn+3 = Tn + Tn+1 + Tn+2
-     * @param n
-     * @return
-     */
-    public int tribonacci(int n) {
-        if(n==0)return 0;
-        if(n==1)return 1;
-        if(n==2)return 1;
-        int o=0,p=1,q=1,r=2;
-        for (int i = 4; i <= n; ++i) {
-            o=p;
-            p=q;
-            q=r;
-            r=o+p+q;
-        }
-        return r;
-    }
-
-    public int minCostClimbingStairs(int[] cost) {
-        int n = cost.length;
-        int[] dp = new int[n + 1];
-        dp[0] = dp[1] = 0;
-        for (int i = 2; i <= n; i++) {
-            dp[i] = Math.min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2]);
-        }
-        return dp[n];
-    }
 }

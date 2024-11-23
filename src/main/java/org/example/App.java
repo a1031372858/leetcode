@@ -33,8 +33,8 @@ public class App
 //        int fib = leetCode.fib(4);
 //        System.out.println(fib);
 
-        int[] arr = new int[]{1,100,1,1,1,100,1,1,100,1};
-        int result = leetCode.minCostClimbingStairs(arr);
-        System.out.println(result);
+//        int[] arr = new int[]{1,100,1,1,1,100,1,1,100,1};
+//        int result = leetCode.minCostClimbingStairs(arr);
+//        System.out.println(result);
     }
 }
