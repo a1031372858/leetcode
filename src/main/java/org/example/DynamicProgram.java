@@ -1,5 +1,9 @@
 package org.example;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class DynamicProgram {
     /**
      * 爬楼梯
@@ -196,4 +200,102 @@ public class DynamicProgram {
         }
         return arr[n-1][m-1];
     }
+
+    /**
+     * 63. 不同路径 II
+     * @param obstacleGrid
+     * @return
+     */
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int n = obstacleGrid.length,m=obstacleGrid[0].length;
+        int[][] arr = new int[n][m];
+        if(obstacleGrid[0][0]==1)return 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if(obstacleGrid[i][j]==1){
+                    arr[i][j]=0;
+                }else if(i==0&&j==0){
+                    arr[0][0]=1;
+                }else if(i==0){
+                    arr[0][j] = arr[0][j-1];
+                }else if(j==0){
+                    arr[i][0] = arr[i-1][0];
+                }else{
+                    arr[i][j] = arr[i-1][j]+arr[i][j-1];
+                }
+            }
+        }
+        return arr[n-1][m-1];
+    }
+
+    /**
+     * 120. 三角形最小路径和
+     * 在原数组中操作
+     * f(n,m) = Min(f(n-1,m-1),f(n-1,m+1)) +nums[n][m];
+     * @param triangle
+     * @return
+     */
+    public int minimumTotal(List<List<Integer>> triangle) {
+        for (int i = triangle.size()-2; i >=0; i--) {
+            List<Integer> curRow = triangle.get(i);
+            List<Integer> preRow = triangle.get(i+1);
+            for (int j = 0; j < curRow.size(); j++) {
+                int v = Math.min(preRow.get(j), preRow.get(j+1)) + triangle.get(i).get(j);
+                curRow.set(j,v);
+            }
+        }
+        return triangle.get(0).get(0);
+    }
+
+    /**
+     * 931. 下降路径最小和
+     * f(n,m)= Min(f(n-1,m-1),f(n-1,m),f(n-1,m+1)) + matrix[n][m];
+     * @param matrix
+     * @return
+     */
+    public int minFallingPathSum(int[][] matrix) {
+        int n = matrix.length;
+        int[] curRow = new int[n];
+        int[] preRow = new int[n];
+        for (int i = n-1; i >=0; i--) {
+            for (int j = 0; j < n; j++) {
+                if(i==n-1){
+                    curRow[j] = matrix[i][j];
+                }else if(j==0){
+                    curRow[j] = Math.min(preRow[j],preRow[j+1]) +matrix[i][j];
+                }else if(j==n-1){
+                    curRow[j] = Math.min(preRow[j-1],preRow[j]) +matrix[i][j];
+                }else{
+                    curRow[j] = Math.min(Math.min(preRow[j-1],preRow[j]),preRow[j+1]) +matrix[i][j];
+                }
+            }
+            preRow= Arrays.copyOf(curRow,curRow.length);
+        }
+        int r = curRow[0];
+        for (int i = 1; i < curRow.length; i++) {
+            r = Math.min(r,curRow[i]);
+        }
+        return r;
+    }
+
+//    /**
+//     * 309. 买卖股票的最佳时机含冷冻期
+//     * 0=持有
+//     * 1=不持有
+//     * 2=不持有，且冷冻
+//     * @param prices
+//     * @return
+//     */
+//    public int maxProfit(int[] prices) {
+//        int n = prices.length;
+//        int[][] dp = new int[n][3];
+//        dp[0][0] = -prices[0];
+//        dp[0][1] = 0;
+//        dp[0][2] = 0;
+//        for (int i = 1; i < n; i++) {
+//            dp[i][0] = Math.max(dp[i-1][0],dp[i-1][1]+prices[i]);
+//            dp[i][1] = Math.max(dp[i-1][1],dp[i-1][2]);
+//            dp[i][2] = Math.max(dp[i-1][1],dp[i-1][2]);
+//        }
+//    }
 }
