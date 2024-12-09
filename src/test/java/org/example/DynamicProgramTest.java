@@ -101,4 +101,11 @@ public class DynamicProgramTest {
         System.out.println(result);
     }
 
+    @Test
+    public void longestPalindrome(){
+        String result = dynamicProgram.longestPalindrome("bb");
+        System.out.println(result);
+    }
+
+
 }

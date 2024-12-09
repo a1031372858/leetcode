@@ -278,6 +278,53 @@ public class DynamicProgram {
         return r;
     }
 
+    /**
+     * 5. 最长回文子串
+     * 回文串里面的结构需要一一对应，最外边边的字母也要一一对应
+     * f(i,j) = f(i+1,j-1) && s(i) == s(j)
+     * @param s
+     * @return
+     */
+    public String longestPalindrome(String s) {
+        int n = s.length();
+        if(n<2){
+            return s;
+        }
+        int begin = 0;
+        int maxLen = 1;
+        char[] charArray = s.toCharArray();
+        //状态转移数组，记录第i个位置，到第j个位置是否是回文串
+        boolean[][] dp = new boolean[n][n];
+        for (int i = 0; i < n; i++) {
+            dp[i][i] = true;
+        }
+        //l为回文串的长度，从2开始
+        for (int l = 2; l <= n; l++) {
+            for (int i = 0; i < n; i++) {
+                int j = i + l - 1;
+                if(j>=n){
+                    break;
+                }
+
+                if(charArray[i]==charArray[j]){
+                    if(j - i < 3){
+                        dp[i][j] = true;
+                    }else{
+                        dp[i][j] = dp[i+1][j-1];
+                    }
+                }else{
+                    dp[i][j] = false;
+                }
+
+                if(dp[i][j] && l > maxLen){
+                    begin = i;
+                    maxLen = l;
+                }
+            }
+        }
+        return s.substring(begin,begin + maxLen);
+    }
+
 //    /**
 //     * 309. 买卖股票的最佳时机含冷冻期
 //     * 0=持有
