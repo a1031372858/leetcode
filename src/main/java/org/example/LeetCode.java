@@ -49,27 +49,7 @@ public class LeetCode {
     }
 
     public int searchInsert(int[] nums, int target) {
-        int start = 0;
-        int end = nums.length-1;
-        int index = nums.length/2;
-
-        while (true){
-            if(nums[index] == target){
-                return index;
-            }else if(nums[index] > target){
-                if(start == end || index == start){
-                    return index;
-                }
-                end = index - 1;
-                index = (end - start)/2 + start;
-            }else{
-                if(start == end || index == end){
-                    return index+1;
-                }
-                start = index + 1;
-                index = (end - start)/2 + start;
-            }
-        }
+        return binarySearch(nums,target);
     }
 
     public int lengthOfLastWord(String s) {
@@ -120,5 +100,58 @@ public class LeetCode {
         return ans.reverse().toString();
     }
 
+    /**
+     * 69. x 的平方根
+     * @param x
+     * @return
+     */
+    public int mySqrt(int x) {
+        int left =0,right=x;
+        int index = 0;
+        while(left<=right){
+            index = (right+left)/2;
+            long cur = (long)index*index;
+            if(cur==x){
+                return index;
+            }else if(cur > x){
+                right = index-1;
+            }else{
+                left = index+1;
+            }
+        }
+        return right;
+    }
+
+    /**
+     * 二分查找法
+     * 和数组中间的数字比，
+     * 比中间的大，则起点改为中间点+1，
+     * 比中间小，则终点改为中间点-1，
+     * 相等时返回相等值的下标
+     * 最后数组会慢慢缩小至2个数时，下一次会变成1个数，1个数时，下一次会数组越界
+     * 起点越界说明这个数比最后的数字大，结果为最后的数+1;
+     * 终点越界说明这个数比最后的数字小,结果为最后的数
+     * 这两种情况，刚好都和left相同，所以直接返回left
+     *
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int binarySearch(int[] nums, int target) {
+        int left =0,right=nums.length-1;
+        int index = 0;
+        while(left<=right){
+            index = (right+left)/2;
+            int cur = nums[index];
+            if(target==cur){
+                return index;
+            }else if(target > cur){
+                left = index+1;
+            }else{
+                right = index-1;
+            }
+        }
+        return left;
+    }
 
 }

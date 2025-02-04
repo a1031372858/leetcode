@@ -21,4 +21,15 @@ public class LeetCodeTest {
         System.out.println(palindrome);
     }
 
+    @Test
+    public void searchInsert() {
+        int[] arr = new int[]{1,3,5,6};
+        int result = leetCode.searchInsert(arr, 2);
+        System.out.println(result);
+    }
+    @Test
+    public void mySqrt() {
+        int result = leetCode.mySqrt(10);
+        System.out.println(result);
+    }
 }
