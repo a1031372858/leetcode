@@ -3,6 +3,8 @@ package org.example;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.util.List;
+
 public class LeetCodeTest {
 
     private final LeetCode leetCode = new LeetCode();
@@ -31,5 +33,24 @@ public class LeetCodeTest {
     public void mySqrt() {
         int result = leetCode.mySqrt(10);
         System.out.println(result);
+    }
+
+    @Test
+    public void targetIndices() {
+        int[] arr = new int[]{1,2,5,2,3};
+        List<Integer> integers = leetCode.targetIndices(arr, 5);
+    }
+
+
+    @Test
+    public void firstBadVersion() {
+        int badVersion = leetCode.firstBadVersion(2126753390);
+        System.out.println(badVersion);
+    }
+
+    @Test
+    public void isPerfectSquare() {
+        boolean perfectSquare = leetCode.isPerfectSquare(2147483647);
+        System.out.println(perfectSquare);
     }
 }

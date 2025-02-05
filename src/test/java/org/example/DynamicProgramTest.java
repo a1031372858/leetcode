@@ -1,5 +1,6 @@
 package org.example;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -107,5 +108,13 @@ public class DynamicProgramTest {
         System.out.println(result);
     }
 
+    @Test
+    public void wordBreak(){
+        List<String> wordDict = new ArrayList<>();
+        wordDict.add("leet");
+        wordDict.add("code");
+        boolean result = dynamicProgram.wordBreak("leetcode", wordDict);
+        System.out.println(result);
+    }
 
 }

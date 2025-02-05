@@ -1,7 +1,6 @@
 package org.example;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author xuyachang
@@ -117,6 +116,268 @@ public class LeetCode {
                 right = index-1;
             }else{
                 left = index+1;
+            }
+        }
+        return right;
+    }
+
+    /**
+     * 2089. 找出数组排序后的目标下标
+     * @param nums
+     * @param target
+     * @return
+     */
+    public List<Integer> targetIndices(int[] nums, int target) {
+        List<Integer> result = new ArrayList<>();
+        Arrays.sort(nums);
+        int left=0,right=nums.length-1;
+        int targetIndex = (left+right)/2;
+        while(left<=right){
+            int index = (left+right)/2;
+            if(nums[index]==target){
+                targetIndex = index;
+                break;
+            }else if(nums[index] > target){
+                right=index-1;
+            }else{
+                left=index+1;
+            }
+            if(left>right){
+                return result;
+            }
+        }
+        int minIndex =targetIndex,maxIndex=targetIndex;
+        for (; minIndex >=0 ; minIndex--) {
+            if(nums[minIndex] < target){
+                break;
+            }
+        }
+        minIndex++;
+        for (; maxIndex < nums.length ; maxIndex++) {
+            if(nums[maxIndex] > target){
+                break;
+            }
+        }
+        maxIndex--;
+        for (int i = minIndex; i <= maxIndex ; i++) {
+            result.add(i);
+        }
+        return result;
+    }
+    public class TreeNode {
+        int val;
+        TreeNode left;
+        TreeNode right;
+        TreeNode() {}
+        TreeNode(int val) { this.val = val; }
+        TreeNode(int val, TreeNode left, TreeNode right) {
+            this.val = val;
+            this.left = left;
+            this.right = right;
+        }
+    }
+
+    /**
+     * 222. 完全二叉树的节点个数
+     * @param root
+     * @return
+     */
+    public int countNodes(TreeNode root) {
+        if(root==null){
+            return 0;
+        }else{
+            return countNodes(root.left) + countNodes(root.right) +1;
+        }
+    }
+
+    /**
+     * 268. 丢失的数字
+     * @param nums
+     * @return
+     */
+    public int missingNumber(int[] nums) {
+        Arrays.sort(nums);
+        int left=0,right=nums.length-1;
+        while (left<=right){
+            int index = (left+right)/2;
+            if(nums[index] <= index){
+                left = index+1;
+            }else{
+                right = index-1;
+            }
+        }
+        return left;
+    }
+
+    /**
+     * 268. 丢失的数字2
+     * 数学解法，最快
+     * @param nums
+     * @return
+     */
+    public int missingNumber2(int[] nums) {
+        int n = nums.length;
+        int total = n*(n+1)/2;
+        for (int i = 0; i < n; i++) {
+            total-=nums[i];
+        }
+        return total;
+    }
+
+    /**
+     * 278. 第一个错误的版本
+     * @param n
+     * @return
+     */
+    public int firstBadVersion(int n) {
+        int left =1,right=n;
+        while(left<right){
+            int index = left+(right-left)/2;
+            if(isBadVersion(index)){
+                right = index;
+            }else{
+                left = index+1;
+            }
+        }
+        return left;
+    }
+    boolean isBadVersion(long version){
+        return version>=1702766720;
+    }
+
+    /**
+     * 349. 两个数组的交集
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public int[] intersection(int[] nums1, int[] nums2) {
+        Set<Integer> list = new HashSet<>();
+        Set<Integer> set = new HashSet<>();
+        for (int i:nums1){
+            set.add(i);
+        }
+        for (int i:nums2){
+            if(set.contains(i)){
+                list.add(i);
+            }
+        }
+        int[] r = new int[list.size()];
+        int i=0;
+        for (Integer item : list) {
+            r[i] = item;
+            i++;
+        }
+        return r;
+    }
+
+    /**
+     * 350. 两个数组的交集 II
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public int[] intersect(int[] nums1, int[] nums2) {
+        int[] list1 = new int[1001];
+        int[] list2 = new int[1001];
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < nums1.length; i++) {
+            list1[nums1[i]]++;
+        }
+        for (int i = 0; i < nums2.length; i++) {
+            list2[nums2[i]]++;
+        }
+        for (int i = 0; i < 1001; i++) {
+            if(list1[i]!=0&&list2[i]!=0){
+                int sum = 0;
+                if(list1[i]>list2[i]){
+                    sum=list2[i];
+                }else{
+                    sum=list1[i];
+                }
+                for (int j = 0; j < sum; j++) {
+                    result.add(i);
+                }
+            }
+        }
+
+        int[] r = new int[result.size()];
+        int i=0;
+        for (Integer item : result) {
+            r[i] = item;
+            i++;
+        }
+        return r;
+    }
+
+    /**
+     * 367. 有效的完全平方数
+     * @param num
+     * @return
+     */
+    public boolean isPerfectSquare(int num) {
+        int left=0,right=num;
+        while (left<=right){
+            int index = (right-left)/2 + left;
+            long cur = (long) index *index;
+            if(cur==num){
+                return true;
+            }else if(cur>num){
+                right = index -1;
+            }else{
+                left = index +1;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 374. 猜数字大小
+     * @param n
+     * @return
+     */
+    public int guessNumber(int n) {
+        int l=0,r=n;
+        while (l<=r){
+            int index = (r-l)/2 +l;
+            int value = guess(index);
+            if(value==0){
+                return index;
+            }else if(value>0){
+                l = index+1;
+            }else{
+                r = index-1;
+            }
+        }
+        return 0;
+    }
+    int guess(int num){
+        int r = 3;
+        if(num==r){
+            return 0;
+        }else if(num>r){
+            return 1;
+        }else {
+            return -1;
+        }
+    }
+
+    /**
+     * 441. 排列硬币
+     * @param n
+     * @return
+     */
+    public int arrangeCoins(int n) {
+        int left=1,right=n;
+        while (left<=right){
+            int index = (right-left)/2 + left;
+            long cur = (long) index *(index+1)/2;
+            if(cur==n){
+                return index;
+            }else if(cur > n){
+                right = index -1;
+            }else{
+                left = index +1;
             }
         }
         return right;

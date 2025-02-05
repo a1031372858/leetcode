@@ -1,8 +1,6 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class DynamicProgram {
     /**
@@ -325,6 +323,27 @@ public class DynamicProgram {
         return s.substring(begin,begin + maxLen);
     }
 
+    /**
+     * 139. 单词拆分
+     * f(i) = f(0)&check(0,i) ~ f(i-1)&check(i-1,i)中任意一个成立
+     * @param s
+     * @param wordDict
+     * @return
+     */
+    public boolean wordBreak(String s, List<String> wordDict) {
+        Set<String> strs = new HashSet<>(wordDict);
+        boolean dp[] = new boolean[s.length()+1];
+        dp[0] = true;
+        for (int i = 1; i <= s.length(); i++) {
+            for (int j = 0; j < i; j++) {
+                if(dp[j] && strs.contains(s.substring(j,i))){
+                    dp[i] = true;
+                    break;
+                }
+            }
+        }
+        return dp[s.length()];
+    }
 //    /**
 //     * 309. 买卖股票的最佳时机含冷冻期
 //     * 0=持有
