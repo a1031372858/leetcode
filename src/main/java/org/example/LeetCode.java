@@ -384,6 +384,32 @@ public class LeetCode {
     }
 
     /**
+     * 2529. 正整数和负整数的最大计数
+     * @param nums
+     * @return
+     */
+    public int maximumCount(int[] nums) {
+        int l=0,r=nums.length-1;
+        while (l<=r){
+            int index = (r-l)/2+l;
+            if(nums[index]>=0){
+                r=index-1;
+            }else if(nums[index]<0){
+                l=index+1;
+            }
+        }
+        int a=r+1;
+        int b =0;
+        for (int i = r+1; i < nums.length; i++) {
+            if(nums[i]>0){
+                b=nums.length-i;
+                break;
+            }
+        }
+        return Math.max(a,b);
+    }
+
+    /**
      * 二分查找法
      * 和数组中间的数字比，
      * 比中间的大，则起点改为中间点+1，
