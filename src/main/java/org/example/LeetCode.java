@@ -609,6 +609,124 @@ public class LeetCode {
     }
 
     /**
+     * 94. 二叉树的中序遍历
+     * 左中右的顺序遍历
+     * @param root
+     * @return
+     */
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        inorder(root,ans);
+        return ans;
+    }
+
+    void inorder(TreeNode node,List<Integer> ans){
+        if(node!=null){
+            inorder(node.left,ans);
+            ans.add(node.val);
+            inorder(node.right,ans);
+        }
+    }
+
+    /**
+     * 144. 二叉树的前序遍历
+     * 中左右
+     * @param root
+     * @return
+     */
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        Stack<TreeNode> stack = new Stack<>();
+        //重复操作直到节点为空且，所有节点都出栈
+        while (root!=null || !stack.isEmpty()){
+            while (root!=null){
+                //先将当前值加入答案
+                ans.add(root.val);
+                //再把当前节点入栈
+                stack.push(root);
+                //重复操作左边的节点
+                root=root.left;
+            }
+            //从最左下角开始，出栈，取出右边的节点，重复操作右边的节点，将右边的节点加入答案
+            root = stack.pop();
+            root=root.right;
+        }
+        return ans;
+    }
+
+    /**
+     * 左右中
+     * @param root
+     * @return
+     */
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> ans = new ArrayList<>();
+        postorder(root,ans);
+        return ans;
+    }
+    void postorder(TreeNode node,List<Integer> ans){
+        if(node!=null){
+            postorder(node.left,ans);
+            postorder(node.right,ans);
+            ans.add(node.val);
+        }
+    }
+
+    /**
+     * 80. 删除有序数组中的重复项 II
+     * @param nums
+     * @return
+     */
+    public int removeDuplicates(int[] nums) {
+        int j = 1;
+        int total=1;
+        int cur = nums[0];
+        for (int i = 1; i < nums.length;i++) {
+            if(nums[i]==cur){
+                if(total>=2){
+                    total++;
+                }else{
+                    total++;
+                    nums[j]=nums[i];
+                    j++;
+                }
+            }else {
+                nums[j] = nums[i];
+                j++;
+                cur=nums[i];
+                total=1;
+            }
+        }
+        return j;
+    }
+
+    /**
+     * 169. 多数元素
+     * @param nums
+     * @return
+     */
+    public int majorityElement(int[] nums) {
+        Map<Integer,Integer> map = new HashMap<>();
+        for (int i = 0; i < nums.length; i++) {
+            if(map.containsKey(nums[i])){
+                map.put(nums[i],map.get(nums[i])+1);
+            }else{
+                map.put(nums[i],1);
+            }
+        }
+        int max=0,ans=0;
+        for (Integer item : map.keySet()) {
+            if(map.get(item)>max){
+                max=map.get(item);
+                ans=item;
+            }
+        }
+        return ans;
+    }
+
+
+
+    /**
      * 二分查找法
      * 和数组中间的数字比，
      * 比中间的大，则起点改为中间点+1，
