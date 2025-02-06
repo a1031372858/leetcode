@@ -410,6 +410,205 @@ public class LeetCode {
     }
 
     /**
+     * 2540. 最小公共值
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public int getCommon(int[] nums1, int[] nums2) {
+        for (int i = 0,j=0; i < nums1.length && j < nums2.length;) {
+            if(nums1[i]==nums2[j]){
+                return nums1[i];
+            }else if(nums1[i] > nums2[j]){
+                j++;
+            }else{
+                i++;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 704. 二分查找
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int search(int[] nums, int target) {
+        int left=0,right=nums.length-1;
+        while (left<=right){
+            int i = (right-left)/2+left;
+            if(nums[i]==target){
+                return i;
+            }else if (nums[i]>target){
+                right = i-1;
+            }else{
+                left = i+1;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * LCR 173. 点名
+     * @param records
+     * @return
+     */
+    public int takeAttendance(int[] records) {
+        int left=0,right=records.length-1;
+        while (left<=right){
+            int i = (right-left)/2 +left;
+            if(records[i]<=i){
+                left = i+1;
+            }else{
+                right = i-1;
+            }
+        }
+        return left;
+    }
+
+    /**
+     * 33. 搜索旋转排序数组
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int search33(int[] nums, int target) {
+        int mid=nums[0],left=1,right=nums.length-1;
+        if(target==mid){
+            return 0;
+        }
+        while (left<=right){
+            int i = (right-left)/2+left;
+            if(nums[i]>mid){
+                left = i+1;
+            }else{
+                right = i-1;
+            }
+        }
+        int zeroIndex = left;
+        if(target>mid){
+            left = 1;
+            right= zeroIndex-1;
+        }else{
+            left = zeroIndex;
+            right=nums.length-1;
+        }
+        while (left<=right){
+            int i = (right-left)/2+left;
+            if(nums[i]==target){
+                return i;
+            }else if(nums[i] < target){
+                left = i+1;
+            }else{
+                right = i-1;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * 20.有效的括号
+     * @param s
+     * @return
+     */
+    public boolean isValid(String s) {
+        char[] chars = s.toCharArray();
+        Stack<Character> stack = new Stack<>();
+        for (int i = 0; i < chars.length; i++) {
+            if(chars[i]=='{'){
+                stack.push('}');
+            }else if(chars[i]=='('){
+                stack.push(')');
+            }else if(chars[i]=='['){
+                stack.push(']');
+            }else{
+                if(!stack.isEmpty()){
+                    if(!stack.pop().equals(chars[i])){
+                        return false;
+                    }
+                }else{
+                    return false;
+                }
+            }
+        }
+        return stack.isEmpty();
+    }
+
+    /**
+     * 496. 下一个更大元素 I
+     * @param nums1
+     * @param nums2
+     * @return
+     */
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        Map<Integer,Integer> map = new HashMap<>();
+        int[] ans = new int[nums1.length];
+        Stack<Integer> stack = new Stack<>();
+        for (int i = nums2.length-1; i >=0 ; i--) {
+            int num = nums2[i];
+            while (!stack.isEmpty() && stack.peek()<num){
+                //i是当前最小下标，如果栈里的数比当前值小，则不可能是第一个更大元素，因此把后面更小的元素全出栈
+                stack.pop();
+            }
+            //如果出栈操作结束后，栈为空，则当前下标后面没有更大元素，当前结果为-1。
+            //如果出栈操作结束后，栈不为空，说明当前下班后面有更大元素，取出第一个更大元素
+            map.put(num,stack.isEmpty()?-1:stack.peek());
+            //将当前元素入栈
+            stack.push(num);
+        }
+        for (int i = 0; i < ans.length; i++) {
+            ans[i] = map.get(nums1[i]);
+        }
+        return ans;
+    }
+
+    /**
+     * 1475. 商品折扣后的最终价格
+     * @param prices
+     * @return
+     */
+    public int[] finalPrices(int[] prices) {
+        int[] ans = new int[prices.length];
+        Stack<Integer> stack = new Stack<>();
+        for (int i = prices.length-1; i >=0; i--) {
+            int num = prices[i];
+            while (!stack.isEmpty() && stack.peek()>num){
+                stack.pop();
+            }
+            ans[i] = stack.isEmpty()?prices[i]:prices[i]-stack.peek();
+            stack.push(num);
+        }
+        return ans;
+
+    }
+
+    /**
+     * 1021. 删除最外层的括号
+     * @param s
+     * @return
+     */
+    public String removeOuterParentheses(String s) {
+        Stack<Character> stack = new Stack<>();
+        char[] chars = s.toCharArray();
+        StringBuilder ans = new StringBuilder();
+        StringBuilder str = new StringBuilder();
+        for (int i = 0; i < chars.length; i++) {
+            if(chars[i]=='('){
+                stack.push(')');
+            }else{
+                stack.pop();
+            }
+            str.append(chars[i]);
+            if(stack.isEmpty()){
+                ans.append(str,1,str.length()-1);
+                str.delete(0,str.length());
+            }
+        }
+        return ans.toString();
+    }
+
+    /**
      * 二分查找法
      * 和数组中间的数字比，
      * 比中间的大，则起点改为中间点+1，

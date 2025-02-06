@@ -53,4 +53,18 @@ public class LeetCodeTest {
         boolean perfectSquare = leetCode.isPerfectSquare(2147483647);
         System.out.println(perfectSquare);
     }
+
+    @Test
+    public void getCommon() {
+        int[] arr1 = new int[]{1,2,3};
+        int[] arr2 = new int[]{5,6};
+        int common = leetCode.getCommon(arr1, arr2);
+        System.out.println(common);
+    }
+
+    @Test
+    public void isValid() {
+        boolean valid = leetCode.isValid("{{}}}");
+        System.out.println(valid);
+    }
 }
