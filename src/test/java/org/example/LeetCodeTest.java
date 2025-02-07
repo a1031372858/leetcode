@@ -67,4 +67,9 @@ public class LeetCodeTest {
         boolean valid = leetCode.isValid("{{}}}");
         System.out.println(valid);
     }
+    @Test
+    public void twoSum2() {
+        int[] arr = new int[]{-10,-8,-2,1,2,5,6};
+        int[] ints = leetCode.twoSum2(arr, 0);
+    }
 }

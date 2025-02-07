@@ -724,6 +724,88 @@ public class LeetCode {
         return ans;
     }
 
+    /**
+     * 392. 判断子序列
+     * @param s
+     * @param t
+     * @return
+     */
+    public boolean isSubsequence(String s, String t) {
+        int j=0;
+        for (int i = 0; i < t.length() && j<s.length(); i++) {
+            if(s.charAt(j)==t.charAt(i)){
+                j++;
+            }
+        }
+        return j>=s.length();
+    }
+
+    /**
+     * 167. 两数之和 II - 输入有序数组
+     * @param numbers
+     * @param target
+     * @return
+     */
+    public int[] twoSum2(int[] numbers, int target) {
+        int[] ans = new int[2];
+        int i=0,j=numbers.length-1;
+        boolean isRight=false;
+        while (i<j){
+            int cur = numbers[i]+numbers[j];
+            if(cur==target){
+                ans[0]=i+1;
+                ans[1]=j+1;
+                return ans;
+            }else if(cur>target){
+                if(isRight){
+                    //将j向右移动时，如果大于目标值，说明后面的值都大于目标值，将i向右移动
+                    i++;
+                    //将i向右移动后，判断当前值大小，重新判断j的移动方向
+                    isRight= numbers[i] + numbers[j] < target;
+                }else{
+                    j--;
+                }
+            }else{
+                if(isRight){
+                    if(j==numbers.length-1){
+                        i++;
+                        isRight= numbers[i] + numbers[j] < target;
+                    }else{
+                        j++;
+                    }
+                }else{
+                    i++;
+                    isRight= numbers[i] + numbers[j] < target;
+                }
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 167. 两数之和 II - 输入有序数组
+     * @param numbers
+     * @param target
+     * @return
+     */
+    public int[] twoSum3(int[] numbers, int target) {
+        int[] ans = new int[2];
+        int i=0,j=numbers.length-1;
+        while (i<j){
+            int cur = numbers[i]+numbers[j];
+            if(cur==target){
+                ans[0]=i+1;
+                ans[1]=j+1;
+                return ans;
+            } else if(cur>target){
+                j--;
+            }else{
+                i++;
+            }
+        }
+        return ans;
+    }
+
 
 
     /**
