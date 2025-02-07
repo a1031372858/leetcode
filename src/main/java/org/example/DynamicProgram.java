@@ -344,6 +344,101 @@ public class DynamicProgram {
         }
         return dp[s.length()];
     }
+
+    /**
+     * 121. 买卖股票的最佳时机
+     * @param prices
+     * @return
+     */
+    public int maxProfit(int[] prices) {
+        int ans = 0;
+        int[] minArr = new int[prices.length];
+        int min = prices[0];
+        for (int i = 0; i < prices.length; i++) {
+            if(prices[i]<min){
+                min=prices[i];
+            }
+            minArr[i]=min;
+        }
+        for (int i = 1; i < prices.length; i++) {
+            int r = prices[i]-minArr[i-1];
+            if(r>ans){
+                ans=r;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 122. 买卖股票的最佳时机 II
+     * f(x)持有 = Max(f(x-1)持有,f(x-1)不持有-prices[x])
+     * f(x)不持有 = Max(f(x-1)持有+price[1],f(x-1)不持有)
+     *
+     * dp[i][0] = Math.max(dp[i-1][0],dp[i-1][1]-prices[i])
+     * dp[i][1] = Math.max(dp[i-1][0]+prices[i],dp[i-1][1])
+     *
+     * @param prices
+     * @return
+     */
+    public int maxProfit2(int[] prices) {
+        int n = prices.length;
+        int[][] dp = new int[n][2];
+        dp[0][0] = -prices[0];
+        dp[0][1] = 0;
+        for (int i = 1; i < n; i++) {
+            dp[i][0] = Math.max(dp[i-1][0],dp[i-1][1]-prices[i]);
+            dp[i][1] = Math.max(dp[i-1][0]+prices[i],dp[i-1][1]);
+        }
+        return Math.max(dp[n-1][0],dp[n-1][1]);
+    }
+
+    /**
+     * 55. 跳跃游戏
+     * dp[i] = Math.max(dp[i-1],i+nums[i])
+     * @param nums
+     * @return
+     */
+    public boolean canJump(int[] nums) {
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        for (int i = 1; i < nums.length; i++) {
+            if(dp[i-1]>=i){
+                dp[i] = Math.max(dp[i-1],i+nums[i]);
+            }else{
+                return false;
+            }
+        }
+        return dp[nums.length-1]>=nums.length-1;
+    }
+
+    /**
+     * 322. 零钱兑换
+     * @param coins
+     * @param amount
+     * @return
+     */
+    public int coinChange(int[] coins, int amount) {
+        if(amount==0)return 0;
+        int n =coins.length;
+        int[] dp = new int[amount+1];
+        for (int i = 0; i < n; i++) {
+            dp[0] = 0;
+        }
+        for (int i = 1; i < amount+1; i++) {
+            int min = -1;
+            for (int j = 0; j < n; j++) {
+                int preTotal = i-coins[j]<0?-1:dp[i-coins[j]];
+                if(preTotal > -1){
+                    if(min==-1 || preTotal+1<min){
+                        min=preTotal+1;
+                    }
+                }
+            }
+            dp[i]=min;
+        }
+        return dp[amount];
+    }
+
 //    /**
 //     * 309. 买卖股票的最佳时机含冷冻期
 //     * 0=持有
