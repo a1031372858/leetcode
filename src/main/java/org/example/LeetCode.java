@@ -806,6 +806,59 @@ public class LeetCode {
         return ans;
     }
 
+    /**
+     * 2. 两数相加
+     * @param l1
+     * @param l2
+     * @return
+     */
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode ans = new ListNode();
+        ListNode curNode = ans;
+        int x = 0;
+        while (l1!=null || l2!=null || x!=0){
+            int v1 = 0;
+            if(l1!=null){
+                v1=l1.val;
+                l1=l1.next;
+            }
+            int v2 = 0;
+            if(l2!=null){
+                v2=l2.val;
+                l2=l2.next;
+            }
+            int cur = (v1+v2+x)%10;
+            x = (v1+v2+x)/10;
+            curNode.val=cur;
+            if(l1!=null || l2!=null || x!=0){
+                curNode.next=new ListNode();
+                curNode = curNode.next;
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 104. 二叉树的最大深度
+     * @param root
+     * @return
+     */
+    public int maxDepth(TreeNode root) {
+        if(root==null)return 0;
+        return Math.max(maxDepth(root.left),maxDepth(root.right))+1;
+    }
+
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if(p==null&&q==null){
+            
+        }else if(p!=null&&q!=null && p.val==q.val){
+
+        }else{
+            return false;
+        }
+    }
+
+
 
 
     /**
