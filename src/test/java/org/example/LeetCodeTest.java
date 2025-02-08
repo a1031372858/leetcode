@@ -72,4 +72,11 @@ public class LeetCodeTest {
         int[] arr = new int[]{-10,-8,-2,1,2,5,6};
         int[] ints = leetCode.twoSum2(arr, 0);
     }
+
+    @Test
+    public void searchMatrix() {
+        int[][] arr = new int[][]{{1}};
+        boolean b = leetCode.searchMatrix(arr, 0);
+        System.out.println(b);
+    }
 }

@@ -164,18 +164,6 @@ public class LeetCode {
         }
         return result;
     }
-    public class TreeNode {
-        int val;
-        TreeNode left;
-        TreeNode right;
-        TreeNode() {}
-        TreeNode(int val) { this.val = val; }
-        TreeNode(int val, TreeNode left, TreeNode right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
-    }
 
     /**
      * 222. 完全二叉树的节点个数
@@ -848,17 +836,146 @@ public class LeetCode {
         return Math.max(maxDepth(root.left),maxDepth(root.right))+1;
     }
 
+    /**
+     * 100. 相同的树
+     * @param p
+     * @param q
+     * @return
+     */
     public boolean isSameTree(TreeNode p, TreeNode q) {
         if(p==null&&q==null){
-            
+            return true;
         }else if(p!=null&&q!=null && p.val==q.val){
-
+            return isSameTree(p.left,q.left) && isSameTree(p.right,q.right);
         }else{
             return false;
         }
     }
 
+    /**
+     * 101. 对称二叉树
+     * @param root
+     * @return
+     */
+    public boolean isSymmetric(TreeNode root) {
+        return symmetric(root.left,root.right);
+    }
 
+    public boolean symmetric(TreeNode p, TreeNode q){
+        if(p==null&&q==null){
+            return true;
+        }else if(p!=null&&q!=null && p.val==q.val){
+            return symmetric(p.left,q.right) && symmetric(p.right,q.left);
+        }else{
+            return false;
+        }
+    }
+
+    /**
+     * 112. 路径总和
+     * @param root
+     * @param targetSum
+     * @return
+     */
+    public boolean hasPathSum(TreeNode root, int targetSum) {
+        if(root==null){
+            return false;
+        }else if(root.val==targetSum && root.left==null && root.right == null){
+            return true;
+        } else{
+            return hasPathSum(root.left,targetSum-root.val) || hasPathSum(root.right,targetSum-root.val);
+        }
+    }
+
+    /**
+     * 129. 求根节点到叶节点数字之和
+     * @param root
+     * @return
+     */
+    public int sumNumbers(TreeNode root) {
+        return getSum(root,0);
+    }
+
+    public int getSum(TreeNode node,int sum){
+        if(node==null){
+            return 0;
+        }else if(node.left==null && node.right == null){
+            return sum+node.val;
+        }else{
+            return getSum(node.left,(sum+node.val)*10)+getSum(node.right,(sum+node.val)*10);
+        }
+    }
+
+    /**
+     * 74. 搜索二维矩阵
+     * @param matrix
+     * @param target
+     * @return
+     */
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int left=0,right=matrix.length-1;
+        while (left<=right){
+            int i = (right-left)/2 + left;
+            if(matrix[i][0]==target){
+                return true;
+            }else if(matrix[i][0]<target){
+                left = i+1;
+            }else{
+                right = i-1;
+            }
+        }
+
+        int a = right;
+        if(a<0||a>=matrix.length){
+            return false;
+        }
+        left=0;
+        right=matrix[a].length-1;
+        while (left<=right){
+            int i = (right-left)/2 + left;
+            if(matrix[a][i]==target){
+                return true;
+            }else if(matrix[a][i]<target){
+                left = i+1;
+            }else{
+                right = i-1;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 162. 寻找峰值
+     * 峰值元素是指其值严格大于左右相邻值的元素。
+     *
+     * 给你一个整数数组 nums，找到峰值元素并返回其索引。数组可能包含多个峰值，在这种情况下，返回 任何一个峰值 所在位置即可。
+     *
+     * 你可以假设 nums[-1] = nums[n] = -∞ 。
+     *
+     * 你必须实现时间复杂度为 O(log n) 的算法来解决此问题。
+     *
+     * 解：
+     * 峰值的左边到峰值一定是一个递增序列，峰值的右边到峰值也一定是一个递增序列
+     * 所以找到一个左边或右边，就可以找到一个递增序列，然后慢慢缩小范围找到一段递增序列里的一个峰值就可以了。
+     * @param nums
+     * @return
+     */
+    public int findPeakElement(int[] nums) {
+        int left=0,right=nums.length-1;
+        while (left<right){
+            int i = (right-left)/2+left;
+            if((i==0 || nums[i]>nums[i-1]) && (i==nums.length-1 || nums[i]>nums[i+1])){
+                return i;
+            }else if(i==0 || nums[i]>nums[i-1]){
+                left = i+1;
+            }else if(i==nums.length-1 || nums[i]>nums[i+1]){
+                right = i-1;
+            }else{
+                left = left+1;
+            }
+        }
+        return left;
+    }
 
 
     /**
